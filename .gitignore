@@ -21,3 +21,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/img/1.pdf
+/img/2.pdf
+/img/fb.svg
+/img/tg.svg
+/img/viber.svg
+
+/styles/App.scss
+/styles/clearingstyles.scss
+

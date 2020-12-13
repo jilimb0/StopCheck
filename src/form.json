@@ -1,0 +1,12 @@
+[
+  { "id": 1, "type": "text", "label": "Город" },
+  { "id": 2, "type": "text", "label": "Имя" },
+  { "id": 3, "type": "text", "label": "Номер телефона" },
+  { "id": 4, "type": "text", "label": "Email" },
+  { "id": 5, "type": "text", "label": "Марка, модель авто" },
+  { "id": 6, "type": "text", "label": "Год выпуска, пробег" },
+  { "id": 7, "type": "text", "label": "Мощьность л.с." },
+  { "id": 8, "type": "text", "label": "Объём двигателя" },
+  { "id": 9 },
+  { "id": 10 }
+]
