@@ -14,6 +14,7 @@ class Modal extends React.Component {
       >
         <div
           className={this.props.show ? "modal__content show" : "modal__content"}
+          onClick={(e) => e.stopPropagation()}
         >
           {this.props.children}
         </div>

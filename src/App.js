@@ -29,42 +29,111 @@ class App extends React.Component {
     cost.additionalData = (
       <form>
         {form
-          .filter((item) => item.id <= 8)
+          .filter((item) => item.id === 8)
+          .map((item) => {
+            return (
+              <div className="text__input_inline-block">
+                <input
+                  id={item.id}
+                  placeholder={item.label1}
+                  type="text"
+                  className="text__input_inline"
+                ></input>
+                <input
+                  id={item.id}
+                  placeholder={item.label2}
+                  type="text"
+                  className="text__input_inline"
+                ></input>
+              </div>
+            )
+          })}
+        {form
+          .filter((item) => item.id >= 9 && item.id <= 11)
+          .map((item) => {
+            return (
+              <input
+                id={item.id}
+                placeholder={item.label}
+                type="text"
+                className="text__input"
+              ></input>
+            )
+          })}
+        {form
+          .filter((item) => item.id === 12)
+          .map((item) => {
+            return (
+              <div className="text__input_inline-block">
+                <input
+                  id={item.id}
+                  placeholder={item.label1}
+                  type="text"
+                  className="text__input_inline"
+                ></input>
+                <input
+                  id={item.id}
+                  placeholder={item.label2}
+                  type="text"
+                  className="text__input_inline"
+                ></input>
+              </div>
+            )
+          })}
+        {form
+          .filter((item) => item.id === 13)
+          .map((item) => {
+            return (
+              <select>
+                <option selected disabled value={item.label}>
+                  {item.label}
+                </option>
+                <option value={item.values[0]}>{item.values[0]}</option>
+                <option value={item.values[1]}>{item.values[1]}</option>
+              </select>
+            )
+          })}
+        {form
+          .filter((item) => item.id === 14)
+          .map((item) => {
+            return (
+              <select>
+                <option selected disabled value={item.label}>
+                  {item.label}
+                </option>
+                <option value={item.values[0]}>{item.values[0]}</option>
+                <option value={item.values[1]}>{item.values[1]}</option>
+                <option value={item.values[2]}>{item.values[2]}</option>
+                <option value={item.values[3]}>{item.values[3]}</option>
+              </select>
+            )
+          })}
+        {form
+          .filter((item) => item.id === 15)
           .map((item) => {
             return (
               <>
-                <label htmlFor={item.id} className="text__label">
-                  {item.label}
-                </label>
-                <input id={item.id} type="text" className="text__input"></input>
+                <select>
+                  <option selected disabled value={item.label}>
+                    {item.label}
+                  </option>
+                  <option value={item.values[0]}>{item.values[0]}</option>
+                  <option value={item.values[1]}>{item.values[1]}</option>
+                  <option value={item.values[2]}>{item.values[2]}</option>
+                  <option value={item.values[3]}>{item.values[3]}</option>
+                  <option value={item.values[4]}>{item.values[4]}</option>
+                  <option value={item.values[5]}>{item.values[5]}</option>
+                  <option value={item.values[6]}>{item.values[6]}</option>
+                </select>
+                <input
+                  id={item.id}
+                  placeholder={item.values[7]}
+                  type="text"
+                ></input>
               </>
             )
           })}
       </form>
-      /* <select name="" id="">
-          <option value=""></option>
-          <option value=""></option>
-        </select>
-        <select name="" id="">
-          <option value=""></option>
-          <option value=""></option>
-        </select>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label>
-        <input type="checkbox" className="checkbox" />
-        <label htmlFor=""></label> */
     )
     contacts.additionalData = (
       <>
