@@ -30,3 +30,6 @@ yarn-error.log*
 
 /styles/App.scss
 /styles/clearingstyles.scss
+
+.eslintcache
+prepros.config

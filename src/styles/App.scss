@@ -115,21 +115,6 @@
   white-space: pre-wrap;
   line-height: 130%;
 }
-form {
-  display: block;
-}
-.text__label {
-  display: block;
-  font-size: 20px;
-  padding: 2%;
-}
-input {
-  display: block;
-  width: 65%;
-  height: 20px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 a {
   &.adress {
@@ -161,3 +146,41 @@ a {
     filter: contrast(1.2);
   }
 }
+
+form {
+  display: grid;
+  grid-template: repeat(1fr);
+}
+
+.text__label {
+  display: block;
+  font-size: 20px;
+  padding: 2%;
+}
+input {
+  display: block;
+  width: 70%;
+  margin: 3% auto 0 auto;
+  padding: 3%;
+  border-radius: 5px;
+  font-size: 17px;
+}
+.text__input_inline-block {
+  display: flex;
+  // width: 70%;
+  margin: 0 auto 0 auto;
+}
+.text__input_inline {
+  width: 42%;
+}
+
+.select {
+  display: block;
+  width: 70%;
+  margin: 3% auto 0 auto;
+  padding: 3%;
+  border-radius: 5px;
+  font-size: 17px;
+}
+// .service__block {
+// }
