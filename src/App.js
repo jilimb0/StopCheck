@@ -1,10 +1,11 @@
 import React from "react"
 import logo from "./img/logo.png"
-import "./styles/App.css"
+import "./styles/App.scss"
 import Modal from "./modal.js"
 import inst from "./img/insta.svg"
 import services from "./services.json"
 import form from "./form.json"
+import * as $ from "jquery"
 
 class App extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class App extends React.Component {
     const contacts = services.find((item) => item.id === 6)
 
     cost.additionalData = (
-      <form>
+      <form action="/submit" method="post" id="Form">
         {form
           .filter((item) => item.id === 8)
           .map((item) => {
@@ -36,14 +37,18 @@ class App extends React.Component {
                 <input
                   id={item.id}
                   placeholder={item.label1}
-                  type="text"
+                  name={item.name1}
+                  type="email"
                   className="text__input_inline"
+                  required
                 ></input>
                 <input
                   id={item.id}
                   placeholder={item.label2}
-                  type="text"
+                  name={item.name2}
+                  type="tel"
                   className="text__input_inline"
+                  required
                 ></input>
               </div>
             )
@@ -55,8 +60,10 @@ class App extends React.Component {
               <input
                 id={item.id}
                 placeholder={item.label}
+                name={item.name}
                 type="text"
                 className="text__input"
+                required
               ></input>
             )
           })}
@@ -68,14 +75,18 @@ class App extends React.Component {
                 <input
                   id={item.id}
                   placeholder={item.label1}
-                  type="text"
+                  name={item.name1}
+                  type="number"
                   className="text__input_inline"
+                  required
                 ></input>
                 <input
                   id={item.id}
                   placeholder={item.label2}
-                  type="text"
+                  name={item.name2}
+                  type="number"
                   className="text__input_inline"
+                  required
                 ></input>
               </div>
             )
@@ -84,7 +95,7 @@ class App extends React.Component {
           .filter((item) => item.id === 13)
           .map((item) => {
             return (
-              <select>
+              <select name={item.name}>
                 <option selected disabled value={item.label}>
                   {item.label}
                 </option>
@@ -97,7 +108,7 @@ class App extends React.Component {
           .filter((item) => item.id === 14)
           .map((item) => {
             return (
-              <select>
+              <select name={item.name}>
                 <option selected disabled value={item.label}>
                   {item.label}
                 </option>
@@ -113,7 +124,7 @@ class App extends React.Component {
           .map((item) => {
             return (
               <>
-                <select>
+                <select name={item.name}>
                   <option selected disabled value={item.label}>
                     {item.label}
                   </option>
@@ -129,7 +140,11 @@ class App extends React.Component {
                   id={item.id}
                   placeholder={item.values[7]}
                   type="text"
+                  name="message"
                 ></input>
+                <button className="btn__submit" type="submit">
+                  {item.values[8]}
+                </button>
               </>
             )
           })}
@@ -178,6 +193,26 @@ class App extends React.Component {
   render() {
     const { modalData } = this.state
 
+    $(document).ready(function () {
+      $("Form").submit(function (e) {
+        e.preventDefault()
+        var formID = this.getAttribute("id")
+        var formNm = $("#" + formID)
+        $.ajax({
+          type: "POST",
+          url: "main.php",
+          data: formNm.serialize(),
+          success: function (data) {
+            $(formNm).html(data)
+          },
+          error: function (jqXHR, text, error) {
+            $(formNm).html(error)
+          },
+        })
+        return false
+      })
+    })
+
     return (
       <div class="container">
         <div class="menu">
@@ -219,9 +254,16 @@ class App extends React.Component {
         </div>
 
         <Modal show={this.state.show} hideModal={this.hideModal}>
+          <button className="close" onClick={this.hideModal}>
+            X
+          </button>
           <div className="title">{modalData.title}</div>
           <div className="price">{modalData.price}</div>
-          <div className="content">{modalData.content}</div>
+          <div className={`content content-${modalData.id}`}>
+            {modalData.id <= 4
+              ? modalData.content.split(". ")
+              : modalData.content}
+          </div>
           {modalData.additionalData && modalData.additionalData}
         </Modal>
       </div>
