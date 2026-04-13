@@ -24,3 +24,16 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Netlify + JS Contact Endpoint
+
+This project uses a Netlify Function in JavaScript for form submission:
+
+- Endpoint: `/api/contact`
+- Function file: `netlify/functions/contact.js`
+
+Required Netlify environment variables:
+
+- `RESEND_API_KEY`
+- `CONTACT_TO_EMAIL` (optional, defaults to `stopchek@gmail.com`)
+- `CONTACT_FROM_EMAIL` (optional, defaults to `onboarding@resend.dev`)
