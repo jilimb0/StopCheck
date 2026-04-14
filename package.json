@@ -3,6 +3,10 @@
   "name": "check",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.7.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
@@ -14,11 +18,13 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "pnpm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "biome lint src netlify public",
+    "format": "biome format --write src netlify public",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "gh-pages": "^3.1.0"
   }
 }

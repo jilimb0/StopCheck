@@ -47,25 +47,25 @@ Request flow:
 Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 Run development server:
 
 ```bash
-npm start
+pnpm start
 ```
 
 Run tests:
 
 ```bash
-npm test -- --watchAll=false
+pnpm test -- --watchAll=false
 ```
 
 Create production build:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Netlify Deployment
@@ -74,7 +74,7 @@ Recommended build settings:
 
 - Branch to deploy: `master` (or your feature branch)
 - Base directory: *(empty)*
-- Build command: `npm run build`
+- Build command: `pnpm run build`
 - Publish directory: `build`
 - Functions directory: `netlify/functions`
 
@@ -118,7 +118,7 @@ Turn a legacy service website into a portfolio-grade product demo that shows mod
 
 ### Measurable Outcomes
 
-- Build pipeline: `npm run build` passes
+- Build pipeline: `pnpm run build` passes
 - Test suite: `2/2` tests passing
 - Backend migration: `PHP endpoint -> Netlify Function (Node.js)`
 - Deployment model: static frontend + serverless API under one platform

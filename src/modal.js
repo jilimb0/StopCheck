@@ -18,7 +18,7 @@ class Modal extends React.Component {
   }
 
   hideModal = (e) => {
-    this.props.hideModal && this.props.hideModal(e)
+    this.props.hideModal?.(e)
   }
 
   render() {
