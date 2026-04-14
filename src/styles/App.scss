@@ -349,7 +349,7 @@ select:focus-visible {
   cursor: not-allowed;
 }
 
-@media (max-width: 1000px) and (min-width: 768px) {
+@media (max-width: 1200px) and (min-width: 768px) {
   .menu {
     grid-template: auto auto auto / 1fr;
   }
