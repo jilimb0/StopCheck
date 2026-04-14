@@ -1,39 +1,146 @@
-## Available Scripts
+# StopCheck Portfolio Project
 
-In the project directory, you can run:
+Upgraded lead-capture web app for an automotive diagnostics and tuning business, with the original visual identity preserved.
 
-### `npm start`
+## Live Project Summary
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This project presents a service business in a recruiter-friendly format:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- original branded visual style and page concept retained
+- stabilized modal + service interaction flow
+- lead form connected to a JavaScript serverless endpoint
+- responsive layout for desktop and mobile
+- production-ready static build for Netlify
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React (CRA)
+- SCSS
+- Netlify Functions (Node.js)
+- Resend API (transactional email)
+- React Testing Library + Jest
 
-### `npm run build`
+## Portfolio Highlights
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Replaced legacy PHP form handler with JavaScript serverless architecture
+- Preserved original UI concept while improving code quality and runtime behavior
+- Added SEO and social metadata for shareability
+- Added/updated tests for key user flows (navigation + quote modal form)
+- Validated production build and deployment config
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Architecture
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Frontend app: `src/App.js`
+- Styling system: `src/styles/App.scss`
+- Serverless API: `netlify/functions/contact.js`
+- Netlify routing/build config: `netlify.toml`
 
-## Netlify + JS Contact Endpoint
+Request flow:
+1. User submits quote form in the React app.
+2. Frontend sends JSON to `/api/contact`.
+3. Netlify redirect maps request to `/.netlify/functions/contact`.
+4. Function validates payload and sends email via Resend.
+5. Function returns JSON status message to UI.
 
-This project uses a Netlify Function in JavaScript for form submission:
+## Local Development
 
-- Endpoint: `/api/contact`
-- Function file: `netlify/functions/contact.js`
+Install dependencies:
 
-Required Netlify environment variables:
+```bash
+npm install
+```
 
-- `RESEND_API_KEY`
-- `CONTACT_TO_EMAIL` (optional, defaults to `stopchek@gmail.com`)
-- `CONTACT_FROM_EMAIL` (optional, defaults to `onboarding@resend.dev`)
+Run development server:
+
+```bash
+npm start
+```
+
+Run tests:
+
+```bash
+npm test -- --watchAll=false
+```
+
+Create production build:
+
+```bash
+npm run build
+```
+
+## Netlify Deployment
+
+Recommended build settings:
+
+- Branch to deploy: `master` (or your feature branch)
+- Base directory: *(empty)*
+- Build command: `npm run build`
+- Publish directory: `build`
+- Functions directory: `netlify/functions`
+
+Required environment variables:
+
+- `RESEND_API_KEY` (required)
+- `CONTACT_TO_EMAIL` (optional, default: `stopchek@gmail.com`)
+- `CONTACT_FROM_EMAIL` (optional, default: `onboarding@resend.dev`)
+
+## Recruiter Notes
+
+This repo demonstrates practical frontend + serverless integration skills:
+
+- preserving a unique existing UI while modernizing implementation
+- migration from mixed stack (PHP) to JavaScript-only runtime
+- deployment-aware engineering (Netlify redirects/functions)
+- test-backed iteration and production validation
+
+## Project Case Study
+
+### Goal
+
+Turn a legacy service website into a portfolio-grade product demo that shows modern frontend execution, deployment readiness, and practical backend integration.
+
+### Before
+
+- custom visual concept that required preserving identity during upgrade
+- mixed stack (`React + PHP`) that does not fit static hosting platforms like Netlify
+- minimal project story for recruiters (default CRA-style documentation)
+- weak test signal for key UI flows
+
+### After
+
+- retained original landing concept and interaction style, while removing fragile legacy behavior
+- full JavaScript runtime path:
+  - React frontend
+  - Netlify Function endpoint
+  - email delivery via Resend API
+- improved SEO/social metadata for sharing and presentation
+- stronger test coverage around core user interactions
+
+### Measurable Outcomes
+
+- Build pipeline: `npm run build` passes
+- Test suite: `2/2` tests passing
+- Backend migration: `PHP endpoint -> Netlify Function (Node.js)`
+- Deployment model: static frontend + serverless API under one platform
+
+### Evidence in Repository
+
+- UI implementation: `src/App.js`, `src/styles/App.scss`
+- API function: `netlify/functions/contact.js`
+- deployment config: `netlify.toml`
+- metadata improvements: `public/index.html`
+- tests: `src/App.test.js`
+
+### Screenshot Slots
+
+Add project visuals here for final portfolio presentation:
+
+- `docs/images/before-ui.png`
+- `docs/images/after-ui.png`
+
+## Future Improvements
+
+- Add image optimization pipeline and Lighthouse performance pass
+- Add anti-spam/rate-limiting for form submissions
+- Add i18n toggle (UA/RU/EN)
+- Add Playwright E2E smoke tests
