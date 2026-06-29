@@ -1,52 +1,36 @@
 {
-  "homepage": "",
-  "name": "check",
-  "version": "0.1.0",
+  "name": "stopcheck",
+  "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.7.1",
   "engines": {
     "node": ">=26.0.0"
   },
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.2",
-    "@testing-library/user-event": "^12.5.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "^5.0.1",
-    "sass": "^1.93.2",
-    "web-vitals": "^0.2.4"
-  },
+  "type": "module",
   "scripts": {
-    "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "lint": "biome lint src netlify public",
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check --diagnostic-level=error src netlify public",
     "format": "biome format --write src netlify public",
-    "eject": "react-scripts eject"
+    "validate": "pnpm lint && pnpm test"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "gh-pages": "^3.1.0"
+    "@biomejs/biome": "^2.5.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^6.0.3",
+    "jsdom": "^29.1.1",
+    "sass": "^1.93.2",
+    "vite": "^8.1.0",
+    "vitest": "^4.1.4"
   }
 }

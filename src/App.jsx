@@ -1,10 +1,10 @@
 import React from "react"
 import logo from "./img/logo.png"
 import "./styles/App.scss"
-import Modal from "./modal.js"
-import inst from "./img/insta.svg"
-import services from "./services.json"
 import form from "./form.json"
+import inst from "./img/insta.svg"
+import Modal from "./Modal.jsx"
+import services from "./services.json"
 
 const UI_MESSAGES = {
   ru: {
@@ -69,8 +69,7 @@ const SERVICE_TRANSLATIONS = {
     3: {
       title: "Car Selection",
       price: "from 600 UAH",
-      content:
-        "Inspection for hidden defects. Paintwork thickness check. Computer diagnostics",
+      content: "Inspection for hidden defects. Paintwork thickness check. Computer diagnostics",
     },
     4: {
       title: "Mechanical Works",
@@ -260,7 +259,9 @@ class App extends React.Component {
 
   renderCostForm = () => {
     const emailPhone = this.getFormItem(8)
-    const baseFields = form.filter((item) => item.id >= 9 && item.id <= 11).map((item) => this.getFormItem(item.id))
+    const baseFields = form
+      .filter((item) => item.id >= 9 && item.id <= 11)
+      .map((item) => this.getFormItem(item.id))
     const powerVolume = this.getFormItem(12)
     const engine = this.getFormItem(13)
     const fuel = this.getFormItem(14)
@@ -361,12 +362,7 @@ class App extends React.Component {
                 </option>
               ))}
             </select>
-            <input
-              id="message"
-              placeholder={servicesField.values[7]}
-              type="text"
-              name="message"
-            />
+            <input id="message" placeholder={servicesField.values[7]} type="text" name="message" />
             <button className="btn__submit" type="submit" disabled={submitStatus === "loading"}>
               {submitStatus === "loading" ? UI_MESSAGES[lang].sending : servicesField.values[8]}
             </button>
