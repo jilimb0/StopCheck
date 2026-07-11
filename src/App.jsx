@@ -1,4 +1,4 @@
-import React from "react"
+import { useCallback, useState } from "react"
 import logo from "./img/logo.png"
 import "./styles/App.scss"
 import form from "./form.json"
@@ -158,118 +158,110 @@ const CONTACTS = {
   },
 }
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
+const initialModalDataState = {
+  id: null,
+  title: "",
+  price: "",
+  content: "",
+}
 
-    this.initialModalDataState = {
-      id: null,
-      title: "",
-      price: "",
-      content: "",
-    }
+const App = () => {
+  const [modalData, setModalData] = useState(initialModalDataState)
+  const [show, setShow] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState("idle")
+  const [submitMessage, setSubmitMessage] = useState("")
+  const [lang, setLang] = useState("ru")
 
-    this.state = {
-      modalData: this.initialModalDataState,
-      show: false,
-      submitStatus: "idle",
-      submitMessage: "",
-      lang: "ru",
-    }
-  }
+  const setLanguage = useCallback((newLang) => {
+    setLang(newLang)
+  }, [])
 
-  setLanguage = (lang) => {
-    this.setState({ lang })
-  }
-
-  getLocalizedServiceData = (service) => {
+  const getLocalizedServiceData = (service) => {
     if (!service) {
-      return this.initialModalDataState
+      return initialModalDataState
     }
 
-    const localized = SERVICE_TRANSLATIONS[this.state.lang]?.[service.id]
+    const localized = SERVICE_TRANSLATIONS[lang]?.[service.id]
     return { ...service, ...localized }
   }
 
-  getFormItem = (id) => {
+  const getFormItem = (id) => {
     const baseItem = form.find((item) => item.id === id)
     if (!baseItem) {
       return null
     }
 
-    const localized = FORM_TRANSLATIONS[this.state.lang]?.[id]
+    const localized = FORM_TRANSLATIONS[lang]?.[id]
     return localized ? { ...baseItem, ...localized } : baseItem
   }
 
-  showModal = (modalData) => {
-    this.setState({
-      show: true,
-      modalData: modalData || this.initialModalDataState,
-      submitStatus: "idle",
-      submitMessage: "",
-    })
-  }
+  const showModal = useCallback((data) => {
+    setShow(true)
+    setModalData(data || initialModalDataState)
+    setSubmitStatus("idle")
+    setSubmitMessage("")
+  }, [])
 
-  hideModal = () => {
+  const hideModal = useCallback(() => {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
 
-    this.setState({
-      show: false,
-      modalData: this.initialModalDataState,
-      submitStatus: "idle",
-      submitMessage: "",
-    })
-  }
+    setShow(false)
+    setModalData(initialModalDataState)
+    setSubmitStatus("idle")
+    setSubmitMessage("")
+  }, [])
 
-  handleClick = (event) => {
-    const selectedId = Number(event.currentTarget.id)
-    const data = services.find((item) => item.id === selectedId)
-    this.showModal(data)
-  }
+  const handleClick = useCallback(
+    (event) => {
+      const selectedId = Number(event.currentTarget.id)
+      const data = services.find((item) => item.id === selectedId)
+      showModal(data)
+    },
+    [showModal],
+  )
 
-  handleFormSubmit = async (event) => {
-    event.preventDefault()
+  const handleFormSubmit = useCallback(
+    async (event) => {
+      event.preventDefault()
 
-    const payload = new URLSearchParams(new FormData(event.currentTarget))
-    const messages = UI_MESSAGES[this.state.lang]
+      const payload = new URLSearchParams(new FormData(event.currentTarget))
+      const messages = UI_MESSAGES[lang]
 
-    this.setState({ submitStatus: "loading", submitMessage: "" })
+      setSubmitStatus("loading")
+      setSubmitMessage("")
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(payload.entries())),
-      })
-      const data = await response.json()
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(payload.entries())),
+        })
+        const data = await response.json()
 
-      this.setState({
-        submitStatus: response.ok ? "success" : "error",
-        submitMessage: data.message || messages.fallbackSubmitError,
-      })
-    } catch (_error) {
-      this.setState({
-        submitStatus: "error",
-        submitMessage: messages.networkSubmitError,
-      })
-    }
-  }
+        setSubmitStatus(response.ok ? "success" : "error")
+        setSubmitMessage(data.message || messages.fallbackSubmitError)
+      } catch (_error) {
+        setSubmitStatus("error")
+        setSubmitMessage(messages.networkSubmitError)
+      }
+    },
+    [lang],
+  )
 
-  renderCostForm = () => {
-    const emailPhone = this.getFormItem(8)
+  const renderCostForm = () => {
+    const emailPhone = getFormItem(8)
     const baseFields = form
       .filter((item) => item.id >= 9 && item.id <= 11)
-      .map((item) => this.getFormItem(item.id))
-    const powerVolume = this.getFormItem(12)
-    const engine = this.getFormItem(13)
-    const fuel = this.getFormItem(14)
-    const servicesField = this.getFormItem(15)
-    const { submitStatus, submitMessage, lang } = this.state
+      .map((item) => getFormItem(item.id))
+    const powerVolume = getFormItem(12)
+    const engine = getFormItem(13)
+    const fuel = getFormItem(14)
+    const servicesField = getFormItem(15)
 
     return (
-      <form onSubmit={this.handleFormSubmit} id="service-form" noValidate>
+      <form onSubmit={handleFormSubmit} id="service-form" noValidate>
         {emailPhone && (
           <div className="text__input_inline-block">
             <input
@@ -374,8 +366,8 @@ class App extends React.Component {
     )
   }
 
-  renderContacts = () => {
-    const contact = CONTACTS[this.state.lang]
+  const renderContacts = () => {
+    const contact = CONTACTS[lang]
 
     return (
       <>
@@ -392,119 +384,116 @@ class App extends React.Component {
     )
   }
 
-  renderModalContent = (modalData) => {
-    if (!modalData.id) {
+  const renderModalContent = (data) => {
+    if (!data.id) {
       return null
     }
 
-    if (modalData.id <= 4) {
-      return modalData.content
+    if (data.id <= 4) {
+      return data.content
         .split(". ")
         .filter(Boolean)
         .map((line) => <div key={line}>{line.trim()}</div>)
     }
 
-    return modalData.content
+    return data.content
   }
 
-  renderAdditionalData = (modalData) => {
-    if (modalData.id === 5) {
-      return this.renderCostForm()
+  const renderAdditionalData = (data) => {
+    if (data.id === 5) {
+      return renderCostForm()
     }
 
-    if (modalData.id === 6) {
-      return this.renderContacts()
+    if (data.id === 6) {
+      return renderContacts()
     }
 
     return null
   }
 
-  render() {
-    const { modalData, show, lang } = this.state
-    const localizedModalData = this.getLocalizedServiceData(modalData)
+  const localizedModalData = getLocalizedServiceData(modalData)
 
-    return (
-      <div className="container">
-        <div className="lang-switcher" role="group" aria-label="Language switcher">
-          <button
-            type="button"
-            className={`lang-btn ${lang === "ru" ? "active" : ""}`}
-            onClick={() => this.setLanguage("ru")}
-          >
-            RU
-          </button>
-          <button
-            type="button"
-            className={`lang-btn ${lang === "uk" ? "active" : ""}`}
-            onClick={() => this.setLanguage("uk")}
-          >
-            UA
-          </button>
-          <button
-            type="button"
-            className={`lang-btn ${lang === "en" ? "active" : ""}`}
-            onClick={() => this.setLanguage("en")}
-          >
-            EN
-          </button>
-        </div>
-
-        <div className="menu">
-          <div className="buttons__left">
-            {services
-              .filter((item) => item.id <= 3)
-              .map((item) => {
-                const localizedItem = this.getLocalizedServiceData(item)
-                return (
-                  <button
-                    key={item.id}
-                    id={item.id}
-                    className="button gradient-btn"
-                    onClick={this.handleClick}
-                  >
-                    {localizedItem.title}
-                  </button>
-                )
-              })}
-          </div>
-          <div className="logo">
-            <a href="#index" className="logo__link">
-              <img src={logo} className="logo__icon" alt="StopCheck" />
-            </a>
-          </div>
-          <div className="buttons__right">
-            {services
-              .filter((item) => item.id > 3)
-              .map((item) => {
-                const localizedItem = this.getLocalizedServiceData(item)
-                return (
-                  <button
-                    key={item.id}
-                    id={item.id}
-                    className="button gradient-btn"
-                    onClick={this.handleClick}
-                  >
-                    {localizedItem.title}
-                  </button>
-                )
-              })}
-          </div>
-        </div>
-
-        <Modal show={show} hideModal={this.hideModal}>
-          <button className="close" onClick={this.hideModal}>
-            X
-          </button>
-          <div className="title">{localizedModalData.title}</div>
-          <div className="price">{localizedModalData.price}</div>
-          <div className={`content content-${localizedModalData.id || "none"}`}>
-            {this.renderModalContent(localizedModalData)}
-          </div>
-          {this.renderAdditionalData(localizedModalData)}
-        </Modal>
+  return (
+    <div className="container">
+      <div className="lang-switcher" role="group" aria-label="Language switcher">
+        <button
+          type="button"
+          className={`lang-btn ${lang === "ru" ? "active" : ""}`}
+          onClick={() => setLanguage("ru")}
+        >
+          RU
+        </button>
+        <button
+          type="button"
+          className={`lang-btn ${lang === "uk" ? "active" : ""}`}
+          onClick={() => setLanguage("uk")}
+        >
+          UA
+        </button>
+        <button
+          type="button"
+          className={`lang-btn ${lang === "en" ? "active" : ""}`}
+          onClick={() => setLanguage("en")}
+        >
+          EN
+        </button>
       </div>
-    )
-  }
+
+      <div className="menu">
+        <div className="buttons__left">
+          {services
+            .filter((item) => item.id <= 3)
+            .map((item) => {
+              const localizedItem = getLocalizedServiceData(item)
+              return (
+                <button
+                  key={item.id}
+                  id={item.id}
+                  className="button gradient-btn"
+                  onClick={handleClick}
+                >
+                  {localizedItem.title}
+                </button>
+              )
+            })}
+        </div>
+        <div className="logo">
+          <a href="#index" className="logo__link">
+            <img src={logo} className="logo__icon" alt="StopCheck" />
+          </a>
+        </div>
+        <div className="buttons__right">
+          {services
+            .filter((item) => item.id > 3)
+            .map((item) => {
+              const localizedItem = getLocalizedServiceData(item)
+              return (
+                <button
+                  key={item.id}
+                  id={item.id}
+                  className="button gradient-btn"
+                  onClick={handleClick}
+                >
+                  {localizedItem.title}
+                </button>
+              )
+            })}
+        </div>
+      </div>
+
+      <Modal show={show} hideModal={hideModal}>
+        <button className="close" onClick={hideModal}>
+          X
+        </button>
+        <div className="title">{localizedModalData.title}</div>
+        <div className="price">{localizedModalData.price}</div>
+        <div className={`content content-${localizedModalData.id || "none"}`}>
+          {renderModalContent(localizedModalData)}
+        </div>
+        {renderAdditionalData(localizedModalData)}
+      </Modal>
+    </div>
+  )
 }
 
 export default App
